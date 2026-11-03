@@ -2,6 +2,7 @@ name: Record Bluebikes station status
 
 on:
   schedule:
+    # every 15 minutes, UTC (GitHub may delay runs when busy)
     - cron: "*/15 * * * *"
   workflow_dispatch:
 

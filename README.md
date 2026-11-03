@@ -22,17 +22,19 @@ feed's own Unix timestamp. `station_id` is the feed's own ID; to match the trip 
 Source: https://gbfs.bluebikes.com/gbfs/gbfs.json (station status:
 https://gbfs.lyft.com/gbfs/1.1/bos/en/station_status.json).
 
-## Keep this repo private
+## Data license
 
-The Bluebikes Data License Agreement (https://bluebikes.com/data-license-agreement) does not
-allow publishing the data as a stand-alone dataset. Using it in published analyses is fine.
+The feed data belongs to Bluebikes and is covered by the Bluebikes Data License Agreement
+(https://bluebikes.com/data-license-agreement). It is recorded here for research use. Anyone
+reusing it should get it from the official feed under that agreement.
 
 ## Notes
 
 - Schedule: `*/15 * * * *` in `.github/workflows/record.yml`. GitHub can delay or skip
   scheduled runs when it is busy, so expect some uneven gaps.
-- Each run bills about 1 minute. 96 runs a day is about 2,900 minutes a month, just under the
-  3,000 private-repo minutes on GitHub Pro / Education. Don't shorten the interval.
+- The repo is public, so Actions minutes are free. At 15 minutes the data grows by about
+  45 MB a month; a shorter interval would push the repo past GitHub's comfortable size
+  (about 1 GB) within the year.
 - To stop recording: Actions tab, "Record Bluebikes station status", Disable workflow.
 - Run once by hand: Actions tab, Run workflow (or `gh workflow run record.yml`).
 - Get the data locally: `git pull`, then read the CSVs with pandas (`pd.read_csv(path)`

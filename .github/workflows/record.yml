@@ -1,0 +1,35 @@
+name: Record Bluebikes station status
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: record
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Save snapshot
+        run: python3 record_gbfs.py
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          git commit -q -m "Snapshot $(date -u +%Y-%m-%dT%H:%MZ)" || exit 0
+          for i in 1 2 3; do
+            git pull -q --rebase && git push -q && exit 0
+            sleep 5
+          done
+          exit 1
